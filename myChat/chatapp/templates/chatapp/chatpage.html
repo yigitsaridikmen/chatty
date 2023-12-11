@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <body>
-	<center><h1>Hello , Welcome to my chat site ! {{request.user}}</h1></center>
+	<center><h1>My Home Chat Channel, welcome {{request.user}}!</h1></center>
 	<br>
 	{% if request.user.is_authenticated %}
 	<center> Logout the chat Page <a href = "{% url 'logout-user' %}">Logout</a></center>
@@ -14,6 +14,9 @@
 	<br />
 	<input type="text" id="id_message_send_input" />
 	<button type="submit" id="id_message_send_button">Send Message</button>
+	<button type="submit" id="coffee_request">Coffee?</button>
+	<button type="submit" id="tea_request">Tea?</button>
+	<button type="submit" id="door_request">Door please</button>
 	<br />
 	<br />
 	</div>
@@ -35,6 +38,18 @@
 		var messageInput = document.querySelector(
 		"#id_message_send_input"
 		).value;
+		chatSocket.send(JSON.stringify({ message: messageInput, username : "{{request.user.username}}"}));
+	};
+	document.querySelector("#coffee_request").onclick = function (e) {
+		var messageInput = 'Anybody wants coffee?';
+		chatSocket.send(JSON.stringify({ message: messageInput, username : "{{request.user.username}}"}));
+	};
+	document.querySelector("#tea_request").onclick = function (e) {
+		var messageInput = 'Anybody wants tea?';
+		chatSocket.send(JSON.stringify({ message: messageInput, username : "{{request.user.username}}"}));
+	};
+	document.querySelector("#door_request").onclick = function (e) {
+		var messageInput = 'I am unavailable, could someone check the door?';
 		chatSocket.send(JSON.stringify({ message: messageInput, username : "{{request.user.username}}"}));
 	};
 	chatSocket.onmessage = function (e) {

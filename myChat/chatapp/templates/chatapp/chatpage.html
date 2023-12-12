@@ -12,16 +12,19 @@
 	class="chat__item__container"
 	id="id_chat_item_container"
 	style="font-size: 20px">
-	<br />
-	<input type="text" id="id_message_send_input" />
-	<button type="submit" id="id_message_send_button">Send Message</button>
-	<button type="submit" id="coffee_request">Coffee?</button>
-	<button type="submit" id="tea_request">Tea?</button>
-	<button type="submit" id="door_request">Door please</button>
-	<br />
-	<br />
+	<br />	</div>
+
+
 	</div>
-	</div>
+	<div id=messageButtons style="display:block">
+		<input type="text" id="id_message_send_input" />
+		<button type="submit" id="id_message_send_button">Send Message</button>
+		<button type="submit" id="coffee_request">Coffee?</button>
+		<button type="submit" id="tea_request">Tea?</button>
+		<button type="submit" id="door_request">Door please</button>
+		<br />
+		<br />
+		</div>
 	<script>
 	const chatSocket = new WebSocket("ws://" + window.location.host + "/");
 	chatSocket.onopen = function (e) {
@@ -55,7 +58,7 @@
 		chatSocket.send(JSON.stringify({ message: messageInput, username : "{{request.user.username}}"}));
 	};
 	let username = document.getElementById('username').getAttribute('value');
-	console.log(username);
+	
 	chatSocket.onmessage = function (e) {
 		const data = JSON.parse(e.data);
 		var div = document.createElement("div");
@@ -69,6 +72,7 @@
 		document.querySelector("#id_chat_item_container").appendChild(div);
 		br = document.createElement("br");
 		document.querySelector("#id_chat_item_container").appendChild(br);
+		window.scrollTo(0, document.body.scrollHeight,{behavior:"smooth"});
 	};
 	</script>
 </body>

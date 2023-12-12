@@ -58,8 +58,9 @@
 		chatSocket.send(JSON.stringify({ message: messageInput, username : "{{request.user.username}}"}));
 	};
 	let username = document.getElementById('username').getAttribute('value');
-	
+     
 	chatSocket.onmessage = function (e) {
+		
 		const data = JSON.parse(e.data);
 		var div = document.createElement("div");
 		div.style="order: 1; margin-left: auto; display: inline-block;background-color: #dddddd;border: thin solid #0000dd;padding:5px;border-radius: 10px;margin-bottom:5px;";
@@ -67,6 +68,8 @@
 		{
 			div.style="order: 1; margin-left: auto; display: inline-block;background-color: #ddffdd;border: thin solid #0000dd;padding:5px;border-radius: 10px;margin-bottom:5px;margin-left:60%;";
 		}
+		else{var audio = new Audio('http://codeskulptor-demos.commondatastorage.googleapis.com/GalaxyInvaders/alien_shoot.wav');
+         audio.play();}
 		div.innerHTML = "<b>"+data.username +"</b>:<br>" + data.message;
 		document.querySelector("#id_message_send_input").value = "";
 		document.querySelector("#id_chat_item_container").appendChild(div);

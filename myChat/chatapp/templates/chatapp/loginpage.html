@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
-<body>
+<body style="background-color: #9999dd;">
+<div style="margin: auto; width: 50%;">
 	<form method ="post">
 		{% csrf_token %}
 		{{form.as_p}}
@@ -10,6 +11,7 @@
     <div style="padding-top: 20px;">
     <button onclick="window.location.href='../../accounts/signup/';">Sign-up</button>
     </div>
+</div>
 </body>
 </html>
 

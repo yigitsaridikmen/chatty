@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html>
-<body>
-	<center><h1>My Home Chat Channel, welcome {{request.user}}!</h1></center>
+<body style="background-color: #222222;">
+	<center><h1 style="color: #eeeeee;">My Home Chat Channel, welcome {{request.user}}!</h1></center>
 	<br>
 	{% if request.user.is_authenticated %}
-	<center> Logout the chat Page <a href = "{% url 'logout-user' %}">Logout</a></center>
+	<center style="color: #eeeeee;"> Logout the chat Page <a href = "{% url 'logout-user' %}">Logout</a></center>
 	{% endif %}
+	<div style="display:none" id="username" value="{{request.user}}"></div>
+	<div style="width:50%;display:flex;align-items: left;" id="outer_container">
 	<div
 	class="chat__item__container"
 	id="id_chat_item_container"
-	style="font-size: 20px"
-	>
+	style="font-size: 20px">
 	<br />
 	<input type="text" id="id_message_send_input" />
 	<button type="submit" id="id_message_send_button">Send Message</button>
@@ -19,6 +20,7 @@
 	<button type="submit" id="door_request">Door please</button>
 	<br />
 	<br />
+	</div>
 	</div>
 	<script>
 	const chatSocket = new WebSocket("ws://" + window.location.host + "/");
@@ -52,11 +54,17 @@
 		var messageInput = 'I am unavailable, could someone check the door?';
 		chatSocket.send(JSON.stringify({ message: messageInput, username : "{{request.user.username}}"}));
 	};
+	let username = document.getElementById('username').getAttribute('value');
+	console.log(username);
 	chatSocket.onmessage = function (e) {
 		const data = JSON.parse(e.data);
 		var div = document.createElement("div");
-		div.style="display: inline-block;background-color: #dddddd;border: thin solid #0000dd;padding:5px;border-radius: 10px;margin-bottom:5px";
-		div.innerHTML = data.username + " : " + data.message;
+		div.style="order: 1; margin-left: auto; display: inline-block;background-color: #dddddd;border: thin solid #0000dd;padding:5px;border-radius: 10px;margin-bottom:5px;";
+		if(data.username==username)
+		{
+			div.style="order: 1; margin-left: auto; display: inline-block;background-color: #ddffdd;border: thin solid #0000dd;padding:5px;border-radius: 10px;margin-bottom:5px;margin-left:60%;";
+		}
+		div.innerHTML = "<b>"+data.username +"</b>:<br>" + data.message;
 		document.querySelector("#id_message_send_input").value = "";
 		document.querySelector("#id_chat_item_container").appendChild(div);
 		br = document.createElement("br");

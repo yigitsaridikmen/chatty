@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html>
+<head>
+	    <!-- Required meta tags -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<title>Bukadarabi</title>
+</head>
 <body style="background-color: #222222;">
+	{% include 'base/navbar.html' %}
 	<center><h1 style="color: #eeeeee;">My Home Chat Channel, welcome {{request.user}}!</h1></center>
 	<br>
 	{% if request.user.is_authenticated %}
@@ -13,7 +22,8 @@
 	id="id_chat_item_container"
 	style="font-size: 20px">
 	<br />	</div>
-
+	{% load static %}
+	<img onclick="submitCoffee()" src="{% static 'images/coffee_icon.png' %} ">
 
 	</div>
 	<div id=messageButtons style="display:block">
@@ -77,6 +87,18 @@
 		document.querySelector("#id_chat_item_container").appendChild(br);
 		window.scrollTo(0, document.body.scrollHeight,{behavior:"smooth"});
 	};
+
+        function submitCoffee() {
+			console.log('Coffee requested');
+            document.getElementById('coffee_request').submit();
+        }
+    
 	</script>
+
+	 <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -5,7 +5,7 @@ from accounts import views as account_view
 
 urlpatterns = [
 	path("", chat_views.chatPage, name="chat-page"),
-
+	path("handle_chat_data/", chat_views.create_message, name="handle_chat_data/"),
 	# login-section
 	path("auth/login/", LoginView.as_view
 		(template_name="chatapp/loginpage.html"), name="login-user"),

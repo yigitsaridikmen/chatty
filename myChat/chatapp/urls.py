@@ -12,3 +12,4 @@ urlpatterns = [
 	path("auth/logout/", LogoutView.as_view(), name="logout-user"),
 	path("accounts/signup/", account_view.SignUpView.as_view(), name="signup"),
 ]
+

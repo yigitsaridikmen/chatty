@@ -96,10 +96,10 @@
 		
 		const data = JSON.parse(e.data);
 		var div = document.createElement("div");
-		div.style="max-width: 30vw; word-wrap: break-word;order: 1; margin-left: auto; width:50%;background-color: #dddddd;border: thin solid #0000dd;padding:5px;border-radius: 10px;margin-bottom:5px;";
+		div.style="max-width: 20vw; word-wrap: break-word;order: 1; margin-left: auto; width:100%;background-color: #dddddd;border: thin solid #0000dd;padding:5px;border-radius: 10px;margin-bottom:5px;";
 		if(data.username==username)
 		{
-			div.style="max-width: 30vw; word-wrap: break-word;order: 1; margin-left: auto;width:50%;background-color: #ddffdd;border: thin solid #0000dd;padding:5px;border-radius: 10px;margin-bottom:5px;margin-left:60%;";
+			div.style="max-width: 20vw; word-wrap: break-word;order: 1; margin-left: auto;width:100%;background-color: #ddffdd;border: thin solid #0000dd;padding:5px;border-radius: 10px;margin-bottom:5px;margin-left:60%;";
 		}
 		else{var audio = new Audio('http://codeskulptor-demos.commondatastorage.googleapis.com/GalaxyInvaders/alien_shoot.wav');
          audio.play();}

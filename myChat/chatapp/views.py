@@ -18,11 +18,7 @@ def chatPage(request, *args, **kwargs):
 #     return render(request, 'message_list.html', {'messages': messages})
 @csrf_exempt  # Ensure proper CSRF protection in production
 def create_message(request):
-    print('View triggered')
-    print('My request method: ',request.method)
     if request.method == 'POST' or request.method is None:
-        print('Request is post or none!')
-        print(json.loads(request.body))
         myrequest = json.loads(request.body)
         message_text = myrequest['message_text']
         username = myrequest['username']
@@ -32,8 +28,6 @@ def create_message(request):
             print('form is valid')
             username = form.cleaned_data['username']
             message_text = form.cleaned_data['message_text']
-            form.save()
-            print('form saved')
             Message.objects.create(username=username, message_text=message_text, created_at=timezone.now())
             print('Post received create message worked')
             

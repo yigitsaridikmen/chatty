@@ -22,12 +22,11 @@ def create_message(request):
     print('My request method: ',request.method)
     if request.method == 'POST' or request.method is None:
         print('Request is post or none!')
-        #print(request.POST)
-        print('test')
-        print(json.load(request.body))
-		#received_data = json.loads(request.body)
-        #print(received_data)
-        form = MessageForm(request.POST)  # Assuming you have a form for creating messages
+        print(json.loads(request.body))
+        myrequest = json.loads(request.body)
+        message_text = myrequest['message_text']
+        username = myrequest['username']
+        form = MessageForm(myrequest)  # Assuming you have a form for creating messages
         print(form,form.is_valid)
         if form.is_valid():
             print('form is valid')

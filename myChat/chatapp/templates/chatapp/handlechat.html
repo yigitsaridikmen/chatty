@@ -86,7 +86,12 @@
 		chatSocket.send(JSON.stringify({ message: messageInput, username : "{{request.user.username}}"}));
 	};
 	let username = document.getElementById('username').getAttribute('value');
-     
+    /*CSRF Side Start */
+	function getCSRFToken() {
+    const cookieValue = document.cookie.match(/csrftoken=([^ ;]+)/);
+    return cookieValue ? cookieValue[1] : '';
+	}
+	/*CSRF Side End */
 	chatSocket.onmessage = function (e) {
 		
 		const data = JSON.parse(e.data);
@@ -104,6 +109,23 @@
 		br = document.createElement("br");
 		document.querySelector("#id_chat_item_container").appendChild(br);
 		window.scrollTo(0, document.body.scrollHeight,{behavior:"smooth"});
+		
+		const postData = {
+        message_text: data.message,
+        username: data.username
+        // Add any other relevant data here
+		
+    };
+	console.log(postData.message_text);
+		fetch('', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCSRFToken() // Include CSRF token in the headers
+        },
+        body: JSON.stringify(postData) 
+    })
+	
 	};
 
 

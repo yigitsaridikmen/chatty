@@ -16,14 +16,17 @@
 	<center style="color: #eeeeee;"> Logout the chat Page <a href = "{% url 'logout-user' %}">Logout</a></center>
 	{% endif %}
 	<div style="display:none" id="username" value="{{request.user}}"></div>
+	<div style="color:white;width:50%;display:flex;align-items: left;">
+		{% include 'base/storedchat.html' %}a</div>
 	<div>
+		
 	<div  style="width:50%;display:flex;align-items: left;" id="outer_container">
 	<div
 	class="chat__item__container"
 	id="id_chat_item_container"
 	style="font-size: 20px">
 	<br /></div>
-	</div>	
+	</div>
 	</div>
 	<div class="row">
 		<div class='col' id=messageButtons style="display:block">

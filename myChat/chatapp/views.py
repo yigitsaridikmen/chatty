@@ -40,4 +40,13 @@ def create_message(request):
     return render(request, 'chatapp/chatpage.html', {'form': form})
 
 
+def message_list(request):
+    print('view triggered')
+    qs = Message.objects.all()
+    print(qs)
+    context={
+        "object_list":qs,
+    }
+    return render(request, "chatapp/chatpage.html", context=context)
+
 

@@ -1,3 +1,6 @@
+<div style="color:white">storedchat start</div>
+{% block stored %}	
+<div style="color:white">block start</div>
 {% for message in object_list %}
 <div  style="width:50%;display:flex;align-items: left;" >
 	<div 
@@ -6,3 +9,5 @@
 	 <b>{{ message.username }}</b> <br />{{ message.message_text }}</div> 
 </div>
 {% endfor %}
+<div style="color:white">storedchat End</div>
+{% endblock %}	

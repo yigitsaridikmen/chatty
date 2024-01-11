@@ -8,9 +8,12 @@ import json
 
 # Create your views here.
 def chatPage(request, *args, **kwargs):
+    
 	if not request.user.is_authenticated:
 		return redirect("login-user")
+     
 	context = {}
+
 	return render(request, "chatapp/chatpage.html", context)
 
 # def message_list(request):
@@ -36,6 +39,7 @@ def create_message(request):
         print('else')
         form = MessageForm()  # Assuming you have a form for creating messages
 	
+
 	
     return render(request, 'chatapp/chatpage.html', {'form': form})
 

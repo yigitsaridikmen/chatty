@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+	
 <head>
 	    <!-- Required meta tags -->
 		<meta charset="utf-8">
@@ -9,6 +10,7 @@
 		<title>Bukadarabi</title>
 </head>
 <body style="background-color: #222222;">
+		
 	{% include 'base/navbar.html' %}
 	<center><h1 style="color: #eeeeee;">My Home Chat Channel, welcome {{request.user}}!</h1></center>
 	<br>
@@ -16,10 +18,31 @@
 	<center style="color: #eeeeee;"> Logout the chat Page <a href = "{% url 'logout-user' %}">Logout</a></center>
 	{% endif %}
 	<div style="display:none" id="username" value="{{request.user}}"></div>
-	<div style="color:white;width:50%;display:flex;align-items: left;">
-		{% include 'base/storedchat.html' %}a</div>
+
 	<div>
+		<!-- <div style="color:white">storedchat start</div> -->
 		
+		{% for message in object_list %}
+		{% if request.user.username == message.username %}
+		<div  style="width:30%;display:flex;align-items: left;" >
+			<div 
+			style="font-size: 20px;max-width: 20vw; word-wrap: break-word;order: 1; margin-left: auto; width:100%;background-color: #ddffdd;border: thin solid #0000dd;padding:5px;border-radius: 10px;margin-bottom:5px;">
+			
+			 <b>{{ message.username }}</b> <br />{{ message.message_text }}</div> 
+		</div>
+		{% else %}
+		<div  style="width:12%;display:flex;align-items: left;" >
+			<div 
+			style="font-size: 20px;max-width: 20vw; word-wrap: break-word;order: 1; margin-left: auto; width:100%;background-color: #dddddd;border: thin solid #0000dd;padding:5px;border-radius: 10px;margin-bottom:5px;">
+			
+			 <b>{{ message.username }}</b> <br />{{ message.message_text }}</div> 
+		</div>
+		{% endif  %}
+		{% endfor %}
+		<div style="color:white">
+		<!-- <div style="color:white">storedchat end</div> -->
+		-----------------------------------------------------------------------------------------------------</div>
+
 	<div  style="width:50%;display:flex;align-items: left;" id="outer_container">
 	<div
 	class="chat__item__container"

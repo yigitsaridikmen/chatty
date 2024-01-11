@@ -20,7 +20,7 @@
 	<div style="display:none" id="username" value="{{request.user}}"></div>
 
 	<div>
-		<!-- <div style="color:white">storedchat start</div> -->
+		<!-- Stored chat start -->
 		
 		{% for message in object_list %}
 		{% if request.user.username == message.username %}
@@ -52,7 +52,7 @@
 		{% endif  %}
 		{% endfor %}
 		<div style="color:white">
-		<!-- <div style="color:white">storedchat end</div> -->
+		<!-- Stored chat end -->
 		-----------------------------------------------------------------------------------------------------</div>
 
 	<div  style="width:50%;display:flex;align-items: left;" id="outer_container">
@@ -65,9 +65,17 @@
 	</div>
 	<div class="row">
 		<div class='col' id=messageButtons style="display:block">
-		<textarea id="id_message_send_input" rows="2" cols="50" oninput="autoExpand(this)"></textarea>
+		<textarea placeholder="Type here..." id="id_message_send_input" rows="2" cols="50" oninput="autoExpand(this)"></textarea>
 		<button type="submit" id="id_message_send_button">Send Message</button>
 		<button type="submit" id="door_request">Door please</button>
+		<!-- <button onclick="topFunction()" id="scrollToTopBtn" title="Go to top">Go to Top</button> -->
+		{% load static %}
+		<button onclick="topFunction()" id="scrollToTopBtn"
+			style='width:4%;border-radius: 40px;cursor: pointer;'type="submit" id="goTop">
+			<img style='width: 100%; 
+			height: 100%;'  src="{% static 'images/top_arrow_noBG.png' %} ">
+		</button>
+
 		<br />
 		<br />
 		</div>
@@ -100,6 +108,13 @@
     // Set the new height based on the scroll height of the content
     textarea.style.height = (textarea.scrollHeight) + 'px';
 }
+
+	// When the user clicks on the button, scroll to the top of the document
+	function topFunction() {
+		document.body.scrollTop = 0; // For Safari
+		document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE, and Opera
+	}
+
 
 	const chatSocket = new WebSocket("ws://" + window.location.host + "/");
 	chatSocket.onopen = function (e) {

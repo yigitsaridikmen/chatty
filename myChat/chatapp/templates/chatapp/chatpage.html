@@ -65,7 +65,7 @@
 	</div>
 	<div class="row">
 		<div class='col' id=messageButtons style="display:block">
-		<input type="text" id="id_message_send_input" />
+		<textarea id="id_message_send_input" rows="2" cols="50" oninput="autoExpand(this)"></textarea>
 		<button type="submit" id="id_message_send_button">Send Message</button>
 		<button type="submit" id="door_request">Door please</button>
 		<br />
@@ -92,6 +92,15 @@
 	</div>
 
 	<script>
+	/*Auto Increase Rows of Text Input Area */
+	function autoExpand(textarea) {
+    // Reset the height to allow it to shrink and then re-expand as needed
+    textarea.style.height = 'auto';
+    
+    // Set the new height based on the scroll height of the content
+    textarea.style.height = (textarea.scrollHeight) + 'px';
+}
+
 	const chatSocket = new WebSocket("ws://" + window.location.host + "/");
 	chatSocket.onopen = function (e) {
 		console.log("The connection was setup successfully !");

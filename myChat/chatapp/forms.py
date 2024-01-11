@@ -4,7 +4,7 @@ from .models import Message
 class MessageForm(forms.ModelForm):
     class Meta:
         model = Message
-        fields = ["username","message_text"]
+        fields = ["username","message_text","created_at"]
     def clean(self):
         print('Form is triggered')
         cleaned_data = super().clean()

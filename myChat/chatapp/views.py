@@ -48,9 +48,12 @@ def message_list(request):
     print('view triggered')
     qs = Message.objects.all()
     print(qs)
+    value_today = timezone.now().date()
     context={
         "object_list":qs,
+        'value_today': value_today
     }
+    
     return render(request, "chatapp/chatpage.html", context=context)
 
 

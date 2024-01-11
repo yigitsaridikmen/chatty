@@ -28,14 +28,26 @@
 			<div 
 			style="font-size: 20px;max-width: 20vw; word-wrap: break-word;order: 1; margin-left: auto; width:100%;background-color: #ddffdd;border: thin solid #0000dd;padding:5px;border-radius: 10px;margin-bottom:5px;">
 			
-			 <b>{{ message.username }}</b> <br />{{ message.message_text }}</div> 
+			 <b>{{ message.username }}</b><br>
+			 {% if message.created_at|date:"Y-m-d" == value_today|date:"Y-m-d" %}
+			 <i><small>{{message.created_at|time:"H:i"}}</small></i>
+			 {% else %}
+			 <i><small>{{ message.created_at|date:"d/m/Y" }} {{ message.created_at|time:"H:i" }}</small></i> 
+			 {% endif %}
+			 <br />{{ message.message_text }}</div> 
 		</div>
 		{% else %}
-		<div  style="width:12%;display:flex;align-items: left;" >
+		<div  style="width:15%;display:flex;align-items: left;" >
 			<div 
 			style="font-size: 20px;max-width: 20vw; word-wrap: break-word;order: 1; margin-left: auto; width:100%;background-color: #dddddd;border: thin solid #0000dd;padding:5px;border-radius: 10px;margin-bottom:5px;">
 			
-			 <b>{{ message.username }}</b> <br />{{ message.message_text }}</div> 
+			 <b>{{ message.username }}</b> <br />
+			 {% if message.created_at|date:"Y-m-d" == value_today|date:"Y-m-d" %}
+			 <i><small>{{message.created_at|time:"H:i"}}</small></i>
+			 {% else %}
+			 <i><small>{{ message.created_at|date:"d/m/Y" }} {{ message.created_at|time:"H:i" }}</small></i> 
+			 {% endif %}
+			 <br>{{ message.message_text }}</div> 
 		</div>
 		{% endif  %}
 		{% endfor %}
@@ -136,13 +148,22 @@
 		document.querySelector("#id_chat_item_container").appendChild(br);
 		window.scrollTo(0, document.body.scrollHeight,{behavior:"smooth"});
 		
+		const currentDateTime = new Date().toISOString();
+		// Convert ISO string to Date object
+		const currentDateObject = new Date(currentDateTime);
+		// Add 3 hours
+		currentDateObject.setHours(currentDateObject.getHours() + 3);
+		// Convert Date object back to ISO string
+		const newDateTime = currentDateObject.toISOString();
+
 		const postData = {
         message_text: data.message,
-        username: data.username
+        username: data.username,
+		created_at: newDateTime
         // Add any other relevant data here
 		
     };
-	console.log(postData.message_text);
+	console.log(postData);
 		fetch('handlechat/', {
         method: 'POST',
         headers: {

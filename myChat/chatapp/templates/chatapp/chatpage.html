@@ -155,6 +155,11 @@
 	}
 	/*CSRF Side End */
 	chatSocket.onmessage = function (e) {
+		const currentDateTime = new Date().toISOString();
+		// Convert ISO string to Date object
+		const currentDateObject = new Date(currentDateTime);
+		const newDateTime = currentDateObject.toISOString();
+		const formattedTime = new Date(newDateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 		
 		const data = JSON.parse(e.data);
 		var div = document.createElement("div");
@@ -165,20 +170,14 @@
 		}
 		else{var audio = new Audio('http://codeskulptor-demos.commondatastorage.googleapis.com/GalaxyInvaders/alien_shoot.wav');
          audio.play();}
-		div.innerHTML = "<b>"+data.username +"</b>:<br>" + data.message;
+		div.innerHTML = "<b>"+data.username +"</b>:<br><i><small>" + formattedTime + '</i></small><br>'+data.message;
 		document.querySelector("#id_message_send_input").value = "";
 		document.querySelector("#id_chat_item_container").appendChild(div);
 		br = document.createElement("br");
 		document.querySelector("#id_chat_item_container").appendChild(br);
 		window.scrollTo(0, document.body.scrollHeight,{behavior:"smooth"});
 		
-		const currentDateTime = new Date().toISOString();
-		// Convert ISO string to Date object
-		const currentDateObject = new Date(currentDateTime);
-		// Add 3 hours
-		currentDateObject.setHours(currentDateObject.getHours() + 3);
-		// Convert Date object back to ISO string
-		const newDateTime = currentDateObject.toISOString();
+
 
 		const postData = {
         message_text: data.message,

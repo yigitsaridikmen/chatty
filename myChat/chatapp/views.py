@@ -30,7 +30,7 @@ def create_message(request):
             print('form is valid')
             username = form.cleaned_data['username']
             message_text = form.cleaned_data['message_text']
-            Message.objects.create(username=username, message_text=message_text, created_at=timezone.now())
+            Message.objects.create(username=username, message_text=message_text, created_at=timezone.now() + timezone.timedelta(hours=3))
             print('Post received create message worked')
     else:
         print('else')

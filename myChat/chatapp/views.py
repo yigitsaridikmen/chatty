@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Message
+from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.http import HttpResponseRedirect
 from .forms import MessageForm  # Import your form if you have one
@@ -40,7 +41,7 @@ def create_message(request):
 	
     return render(request, 'chatapp/chatpage.html', {'form': form})
 
-
+@login_required(login_url='auth/login/')
 def message_list(request):
     print('view triggered')
     qs = Message.objects.all()

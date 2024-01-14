@@ -10,7 +10,7 @@ import json
 # Chatgpt api
 
 from .gptapi import gptBot
-
+from .consumers import ChatConsumer
 # Create your views here.
 def chatPage(request, *args, **kwargs):
     
@@ -41,9 +41,14 @@ def create_message(request):
                 response = gptBot(username,message_text[5:])
                 print('GPTS RESPONSE',response)
                 Message.objects.create(username='GPT', message_text=response, created_at=timezone.now() + timezone.timedelta(hours=3))
+                async_send_json = {
+                     "message":response,"username":'GPT'
+                }
+                # return  redirect('../gptchat/')
+                # ASYNC JSON {"message":"@gpt where is Manisa?\n","username":"yigidos"}
     else:
         print('else')
-        form = MessageForm()  # Assuming you have a form for creating messages
+        form = MessageForm()
 	
 
 	

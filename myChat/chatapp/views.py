@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 
 # Chatgpt api
-
+from django.http import HttpResponse
 from .gptapi import gptBot
 from .consumers import ChatConsumer
 # Create your views here.
@@ -31,6 +31,7 @@ def create_message(request):
         message_text = myrequest['message_text']
         username = myrequest['username']
         form = MessageForm(myrequest)  
+        is_gptActive = False
         if form.is_valid() and request.user.username==username:
             print('form is valid')
             username = form.cleaned_data['username']
@@ -44,14 +45,15 @@ def create_message(request):
                 async_send_json = {
                      "message":response,"username":'GPT'
                 }
+                is_gptActive = True
+                # Refresh when is_gptActive is True
                 # return  redirect('../gptchat/')
                 # ASYNC JSON {"message":"@gpt where is Manisa?\n","username":"yigidos"}
     else:
         print('else')
         form = MessageForm()
-	
 
-	
+
     return render(request, 'chatapp/chatpage.html', {'form': form})
 
 @login_required(login_url='auth/login/')

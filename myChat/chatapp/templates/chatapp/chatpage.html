@@ -56,6 +56,7 @@
 		-----------------------------------------------------------------------------------------------------</div>
 
 	<div  style="width:50%;display:flex;align-items: left;" id="outer_container">
+	<div style="color: white;">{{is_gptActive}}CHATGPT</div>	
 	<div
 	class="chat__item__container"
 	id="id_chat_item_container"
@@ -176,6 +177,13 @@
 		br = document.createElement("br");
 		document.querySelector("#id_chat_item_container").appendChild(br);
 		window.scrollTo(0, document.body.scrollHeight,{behavior:"smooth"});
+
+		if(data.message.slice(0,4)=='@gpt')
+		{
+			setTimeout(function () {
+			location.reload(true);
+			}, 10000);
+		}
 		
 
 
@@ -197,9 +205,15 @@
     })
 	
 	};
-
-
+</script>
+{% if is_gptactive %}	
+	<script>
+	/* Refresh the page in need */
+	setTimeout(function () {
+            location.reload(true);
+        }, 50000);
 	</script>
+{% endif %}		
 
 	 <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

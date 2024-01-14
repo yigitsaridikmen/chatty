@@ -7,6 +7,10 @@ from .forms import MessageForm  # Import your form if you have one
 from django.views.decorators.csrf import csrf_exempt
 import json
 
+# Chatgpt api
+
+from .gptapi import gptBot
+
 # Create your views here.
 def chatPage(request, *args, **kwargs):
     
@@ -33,6 +37,10 @@ def create_message(request):
             message_text = form.cleaned_data['message_text']
             Message.objects.create(username=username, message_text=message_text, created_at=timezone.now() + timezone.timedelta(hours=3))
             print('Post received create message worked')
+            if message_text[:4]=='@gpt':
+                response = gptBot(username,message_text[5:])
+                print('GPTS RESPONSE',response)
+                Message.objects.create(username='GPT', message_text=response, created_at=timezone.now() + timezone.timedelta(hours=3))
     else:
         print('else')
         form = MessageForm()  # Assuming you have a form for creating messages
@@ -45,7 +53,6 @@ def create_message(request):
 def message_list(request):
     print('view triggered')
     qs = Message.objects.all()
-    print(qs)
     value_today = timezone.now().date()
     context={
         "object_list":qs,

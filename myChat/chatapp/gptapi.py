@@ -1,12 +1,25 @@
 import openai
+import os
+from openai import OpenAI
 
-openai.api_key = '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'
+OPENAI_API_KEY='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'
+# def gptBot(prompter,message):
+#     response = openai.Completion.create(
+#         engine="gpt-3.5-turbo",  # Use the appropriate engine for your needs
+#         prompt=message,
+#         max_tokens=500  # Adjust as needed
+# )
+#     generated_text = response.choices[0].text
+#     print('GPTs response:',generated_text,' END')
+#     return generated_text
 
-response = openai.Completion.create(
-    engine="davinci-002",  # Use the appropriate engine for your needs
-    prompt="Tell me a joke.",
-    max_tokens=50  # Adjust as needed
-)
 
-generated_text = response.choices[0].text
-print(generated_text)
+client = OpenAI(api_key=OPENAI_API_KEY)
+def gptBot(prompter,message):
+    print('GPT IS TRIGGERED')
+    completion  = client.chat.completions.create(
+        model="gpt-4",
+        messages=[{"role": "user", "content": message}],
+    )
+    response = completion.choices[0].message.content
+    return response

@@ -8,15 +8,17 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 
 # Chatgpt api
-from django.http import HttpResponse
+from django.http import JsonResponse
 from .gptapi import gptBot
 from .consumers import ChatConsumer
+import asyncio
+from django.urls import reverse
 # Create your views here.
 def chatPage(request, *args, **kwargs):
     
 	if not request.user.is_authenticated:
 		return redirect("login-user")
-     
+    
 	context = {}
 
 	return render(request, "chatapp/chatpage.html", context)
@@ -26,13 +28,14 @@ def chatPage(request, *args, **kwargs):
 #     return render(request, 'message_list.html', {'messages': messages})
 @csrf_exempt  # Ensure proper CSRF protection in production
 def create_message(request):
+    
     if request.method == 'POST':
         myrequest = json.loads(request.body)
         message_text = myrequest['message_text']
         username = myrequest['username']
         form = MessageForm(myrequest)  
-        is_gptActive = False
         if form.is_valid() and request.user.username==username:
+            is_gptActive = False
             print('form is valid')
             username = form.cleaned_data['username']
             message_text = form.cleaned_data['message_text']
@@ -45,9 +48,21 @@ def create_message(request):
                 async_send_json = {
                      "message":response,"username":'GPT'
                 }
+                async_send_jsontext = '{'+f'"message":"{response}","username":"GPT"'+'}'
                 is_gptActive = True
+                
+                # gpt_consumer = ChatConsumer()
+                
+                # asyncio.run(gpt_consumer.connect())
+                # asyncio.run(gpt_consumer.disconnect())
+                # asyncio.run(gpt_consumer.receive(async_send_jsontext))
+                # asyncio.run(gpt_consumer.sendMessage(async_send_json))
+                print('REDIRECTING')
+                return HttpResponseRedirect(reverse('gptchat'))
+                # return redirect('chat-page')
+                # return render(request, 'chatapp/chatpage.html', {'form': form,'response':response})
+                # return JsonResponse({'message':response})
                 # Refresh when is_gptActive is True
-                # return  redirect('../gptchat/')
                 # ASYNC JSON {"message":"@gpt where is Manisa?\n","username":"yigidos"}
     else:
         print('else')
@@ -63,9 +78,11 @@ def message_list(request):
     value_today = timezone.now().date()
     context={
         "object_list":qs,
-        'value_today': value_today
+        'value_today': value_today,
     }
     
     return render(request, "chatapp/chatpage.html", context=context)
+
+
 
 

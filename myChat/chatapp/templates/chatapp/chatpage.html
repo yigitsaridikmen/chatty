@@ -57,7 +57,6 @@
 		-----------------------------------------------------------------------------------------------------</div>
 
 	<div  style="width:50%;display:flex;align-items: left;" id="outer_container">
-	<div id='gptactive' style="color: white;">{{ object_list.last }}GPT</div>	
 	<div
 	class="chat__item__container"
 	id="id_chat_item_container"
@@ -189,23 +188,53 @@
 
 
 		const postData = {
-        message_text: data.message,
-        username: data.username,
-		created_at: newDateTime
-        // Add any other relevant data here
-		
-    };
-	console.log(postData);
-	fetch('handlechat/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': getCSRFToken() // Include CSRF token in the headers
-        },
-        body: JSON.stringify(postData) 
+    message_text: data.message,
+    username: data.username,
+    created_at: newDateTime
+};
+
+console.log(postData);
+
+fetch('handlechat/', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCSRFToken()
+    },
+    body: JSON.stringify(postData)
+})
+    .then(response => {
+        if (postData.message_text.slice(0,4)=='@gpt') {
+            return response.json();
+        } else {
+            // If username is not 'GPT', resolve with an empty object
+            return Promise.resolve({});
+        }
     })
-	
+    .then(updatedData => {
+        // Only proceed if username is 'GPT'
+        if (postData.message_text.slice(0,4)=='@gpt') {
+            // Handle the updated data
+            console.log(updatedData);
+            console.log(updatedData.message);
+
+            // Chatgpt response add
+            var divgpt = document.createElement("div");
+            divgpt.style = "max-width: 20vw; word-wrap: break-word;order: 1; margin-left: auto; width:100%;background-color: #dddddd;border: thin solid #0000dd;padding:5px;border-radius: 10px;margin-bottom:5px;";
+
+            var audio = new Audio('http://codeskulptor-demos.commondatastorage.googleapis.com/GalaxyInvaders/alien_shoot.wav');
+            audio.play();
+            divgpt.innerHTML = "<b>GPT</b>:<br><i><small>" + formattedTime + '</i></small><br>' + updatedData.message;
+            document.querySelector("#id_chat_item_container").appendChild(divgpt);
+            document.querySelector("#id_chat_item_container").appendChild(br);
+            window.scrollTo(0, document.body.scrollHeight, { behavior: "smooth" });
+            // Chatgpt response end
+        }
+    })
+    .catch(error => console.error('Error:', error));
+
 	};
+	
 
 
 </script>

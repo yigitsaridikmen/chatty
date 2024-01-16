@@ -57,11 +57,11 @@ def create_message(request):
                 # asyncio.run(gpt_consumer.disconnect())
                 # asyncio.run(gpt_consumer.receive(async_send_jsontext))
                 # asyncio.run(gpt_consumer.sendMessage(async_send_json))
-                print('REDIRECTING')
-                return HttpResponseRedirect(reverse('gptchat'))
+                #print('REDIRECTING')
+                #return HttpResponseRedirect(reverse('gptchat'))
                 # return redirect('chat-page')
                 # return render(request, 'chatapp/chatpage.html', {'form': form,'response':response})
-                # return JsonResponse({'message':response})
+                return JsonResponse({'message':response})
                 # Refresh when is_gptActive is True
                 # ASYNC JSON {"message":"@gpt where is Manisa?\n","username":"yigidos"}
     else:

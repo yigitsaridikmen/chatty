@@ -17,8 +17,15 @@
 	<center><h1 style="color: #eeeeee;">My Home Chat Channel, welcome {{request.user}}!</h1></center>
 	<br>
 	{% if request.user.is_authenticated %}
-	<center style="color: #eeeeee;"> Logout the chat Page <a href = "{% url 'logout-user' %}">Logout</a></center>
-	{% endif %}
+    <center style="color: #eeeeee;">
+        Logout the chat Page
+        <form method="post" action="{% url 'logout-user' %}">
+            {% csrf_token %}
+            <button style='border-radius: 40%; cursor: pointer;' type="submit">Logout</button>
+        </form>
+    </center>
+{% endif %}
+
 	<div style="display:none" id="username" value="{{request.user}}"></div>
 
 	<div>
@@ -53,9 +60,10 @@
 		</div>
 		{% endif  %}
 		{% endfor %}
-		<div style="color:white">
-		<!-- Stored chat end -->
-		-----------------------------------------------------------------------------------------------------</div>
+		<div style="color:white; border-bottom: 1px dotted #dddddd; margin-bottom: 10px;">
+			<!-- Stored chat end -->
+		</div>
+		
 
 	<div  style="width:50%;display:flex;align-items: left;" id="outer_container">
 	<div
@@ -80,6 +88,15 @@
 
 		<br />
 		<br />
+		</div>
+		<div class='col' style="position:fixed ; left:62.5%; bottom:50%;">
+			<div id='bottomButton'>
+			{% load static %}
+			<button style='width:10%;border-radius: 40px;cursor: pointer;'type="submit" id="goToBottom">
+				<img style='width: 75%; 
+				height: 75%;'  src="{% static 'images/bottom_arrow.png' %} ">
+			</button>
+			</div>
 		</div>
 		<div class='col' style="position:fixed ; left:50%; bottom:20%;">
 			<div id='imageButtonCoffee'>
@@ -125,6 +142,7 @@
 	chatSocket.onclose = function (e) {
 		console.log("Something unexpected happened !");
 	};
+	
 	document.querySelector("#id_message_send_input").focus();
 	document.querySelector("#id_message_send_input").onkeyup = function (e) {
 		if (e.keyCode == 13) {
@@ -148,6 +166,9 @@
 	document.querySelector("#door_request").onclick = function (e) {
 		var messageInput = 'I am unavailable, could someone check the door?';
 		chatSocket.send(JSON.stringify({ message: messageInput, username : "{{request.user.username}}"}));
+	};
+	document.querySelector("#goToBottom").onclick = function (e) {
+		window.scrollTo(0, document.body.scrollHeight);
 	};
 	let username = document.getElementById('username').getAttribute('value');
     /*CSRF Side Start */
@@ -199,7 +220,6 @@ fetch('handlechat/', {
 })
     .then(response => {
         if (postData.message_text.slice(0,4)=='@gpt') {
-			console.log('Works so far!');
             return response.json();
         } else {
             // If username is not 'GPT', resolve with an empty object
@@ -236,9 +256,8 @@ fetch('handlechat/', {
 
 	};
 	
-
-
 </script>
+
 	
 
 	 <!-- Optional JavaScript -->

@@ -2,7 +2,7 @@ import openai
 import os
 from openai import OpenAI
 
-OPENAI_API_KEY='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'
+OPENAI_API_KEY='API Key is hidden due to security concerns'
 
 client = OpenAI(api_key=OPENAI_API_KEY)
 def gptBot(prompter,message):

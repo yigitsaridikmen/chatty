@@ -23,9 +23,6 @@ def chatPage(request, *args, **kwargs):
 
 	return render(request, "chatapp/chatpage.html", context)
 
-# def message_list(request):
-#     messages = Message.objects.all().order_by('-created_at')  # Fetch all messages ordered by creation datetime
-#     return render(request, 'message_list.html', {'messages': messages})
 @csrf_exempt  # Ensure proper CSRF protection in production
 def create_message(request):
     
@@ -35,37 +32,15 @@ def create_message(request):
         username = myrequest['username']
         form = MessageForm(myrequest)  
         if form.is_valid() and request.user.username==username:
-            is_gptActive = False
-            print('form is valid')
             username = form.cleaned_data['username']
             message_text = form.cleaned_data['message_text']
             Message.objects.create(username=username, message_text=message_text, created_at=timezone.now() + timezone.timedelta(hours=3))
-            print('Post received create message worked')
             if message_text[:4]=='@gpt':
                 response = gptBot(username,message_text[5:])
-                print('GPTS RESPONSE',response)
                 Message.objects.create(username='GPT', message_text=response, created_at=timezone.now() + timezone.timedelta(hours=3))
-                async_send_json = {
-                     "message":response,"username":'GPT'
-                }
-                async_send_jsontext = '{'+f'"message":"{response}","username":"GPT"'+'}'
-                is_gptActive = True
                 
-                # gpt_consumer = ChatConsumer()
-                
-                # asyncio.run(gpt_consumer.connect())
-                # asyncio.run(gpt_consumer.disconnect())
-                # asyncio.run(gpt_consumer.receive(async_send_jsontext))
-                # asyncio.run(gpt_consumer.sendMessage(async_send_json))
-                #print('REDIRECTING')
-                #return HttpResponseRedirect(reverse('gptchat'))
-                # return redirect('chat-page')
-                # return render(request, 'chatapp/chatpage.html', {'form': form,'response':response})
                 return JsonResponse({'message':response})
-                # Refresh when is_gptActive is True
-                # ASYNC JSON {"message":"@gpt where is Manisa?\n","username":"yigidos"}
     else:
-        print('else')
         form = MessageForm()
 
 
@@ -73,7 +48,6 @@ def create_message(request):
 
 @login_required(login_url='auth/login/')
 def message_list(request):
-    print('view triggered')
     qs = Message.objects.all()
     value_today = timezone.now().date()
     context={

@@ -78,7 +78,7 @@
 		<textarea placeholder="Type here..." id="id_message_send_input" rows="2" cols="50" oninput="autoExpand(this)"></textarea>
 		<button type="submit" id="id_message_send_button">Send Message</button>
 		<button type="submit" id="door_request">Door please</button>
-		<!-- <button onclick="topFunction()" id="scrollToTopBtn" title="Go to top">Go to Top</button> -->
+		<!--Go to Top button -->
 		{% load static %}
 		<button onclick="topFunction()" id="scrollToTopBtn"
 			style='width:4%;border-radius: 40px;cursor: pointer;'type="submit" id="goTop">
@@ -89,6 +89,7 @@
 		<br />
 		<br />
 		</div>
+		<!--Go to Bottom button -->
 		<div class='col' style="position:fixed ; left:62.5%; bottom:50%;">
 			<div id='bottomButton'>
 			{% load static %}
@@ -208,8 +209,6 @@
     created_at: newDateTime
 };
 
-console.log(postData);
-
 fetch('handlechat/', {
     method: 'POST',
     headers: {
@@ -223,7 +222,6 @@ fetch('handlechat/', {
             return response.json();
         } else {
             // If username is not 'GPT', resolve with an empty object
-			console.log('username cannot be detected as gpt');
             return Promise.resolve({});
         }
     })
@@ -231,26 +229,13 @@ fetch('handlechat/', {
         // Only proceed if username is 'GPT'
         if (postData.message_text.slice(0,4)=='@gpt') {
             // Handle the updated data
-            console.log(updatedData);
-            console.log(updatedData.message);
-
-            // Chatgpt response add
-            // var divgpt = document.createElement("div");
-            // divgpt.style = "max-width: 20vw; word-wrap: break-word;order: 1; margin-left: auto; width:100%;background-color: #dddddd;border: thin solid #0000dd;padding:5px;border-radius: 10px;margin-bottom:5px;";
-
-            // var audio = new Audio('http://codeskulptor-demos.commondatastorage.googleapis.com/GalaxyInvaders/alien_shoot.wav');
-            // audio.play();
-            // divgpt.innerHTML = "<b>GPT</b>:<br><i><small>" + formattedTime + '</i></small><br>' + updatedData.message;
-            // document.querySelector("#id_chat_item_container").appendChild(divgpt);
-            // document.querySelector("#id_chat_item_container").appendChild(br);
-            window.scrollTo(0, document.body.scrollHeight, { behavior: "smooth" });
 			chatSocket.send(JSON.stringify({ message: updatedData.message, username : "GPT"}));
+			window.scrollTo(0, document.body.scrollHeight, { behavior: "smooth" });
             // Chatgpt response end
         }
     })
     .catch(error => {
 		console.error('Error:', error);
-		//window.location.reload();
 	}
 		);
 
